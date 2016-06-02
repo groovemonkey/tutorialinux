@@ -1,0 +1,40 @@
+# Main monit configuration file
+## On most Linux distributions, this lives at /etc/monit/monitrc, although your distro may vary
+## On FreeBSD this is at /usr/local/etc/monitrc
+
+## Note: this monitrc file *must* have permissions set to 600, else monit complains
+
+# Run a check every 30 seconds, log to a file
+set daemon  30
+set logfile /var/log/monit.log
+
+# Our monit web dashboard configuration
+set httpd
+    port 2812
+    use address localhost  # only accept connection from localhost
+    # allow localhost        # allow localhost to connect to the server
+    allow yourusername:yourchosenpasswordshouldbedifficulttoguess
+
+
+# check database service
+check host localmysql with address 127.0.0.1
+      if failed ping then alert        
+      if failed port 3306 protocol mysql then alert
+
+
+# php-fpm
+## Depending on your version of Unix or Linux, this path could be different. If you're unsure, just do a 'ls -alh /var/run/'
+
+check process phpfpm with pidfile /var/run/php-fpm.pid
+      if cpu > 50% for 2 cycles then alert
+      # if total cpu > 60% for 5 cycles then restart
+      if memory > 300 MB then alert
+      # if total memory > 500 MB then restart
+
+
+
+
+# include files for individual sites
+## this path is for Ubuntu -- it can change, depending on which Linux/Unix OS you're using
+include /etc/monit/monit.d/*
+
