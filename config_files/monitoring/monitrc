@@ -18,8 +18,15 @@ set httpd
 
 # check database service
 check host localmysql with address 127.0.0.1
-      if failed ping then alert        
-      if failed port 3306 protocol mysql then alert
+    if failed ping then alert        
+    if failed port 3306 protocol mysql then alert
+
+
+# nginx
+check process nginx with pidfile /var/run/nginx.pid
+    start program = "/etc/init.d/nginx start"
+    stop program  = "/etc/init.d/nginx stop"
+    group www-data
 
 
 # php-fpm
