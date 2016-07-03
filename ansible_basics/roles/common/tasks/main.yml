@@ -1,0 +1,33 @@
+---
+- name: Update package lists
+  apt: update_cache=yes
+
+- name: Install tmux
+  apt: name=tmux state=present
+
+- name: Install zsh
+  apt: name=zsh state=present
+
+- name: Install openssh
+  apt: name=openssh-server state=present
+
+
+
+- name: Install several packages at once (python dev)
+  apt: name={{ item }} state=present
+  with_items:
+    - python # silly -- already installed
+    - python-dev
+    - python-virtualenv
+
+- name: Create the 'dave' user
+  user: name=dave shell=/bin/bash
+  #user: name=dave shell=/bin/bash groups=admins,developers append=yes
+
+- name: Set zsh as the default shell for dave
+  command: /usr/bin/chsh -s /usr/bin/zsh dave
+
+
+- name: Copy configuration for sshd
+  template: src=sshdconfig.jinja2 dest=/etc/ssh/sshd_config
+  notify: restart sshd
