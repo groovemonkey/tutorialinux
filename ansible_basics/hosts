@@ -1,0 +1,17 @@
+[testhosts]
+
+# this is my example LXC container
+10.0.3.152
+
+###################
+# mail.example.com
+
+# [webservers]
+# foo.example.com
+# bar.example.com
+
+# [dbservers]
+# one.example.com
+# two.example.com
+# three.example.com
+

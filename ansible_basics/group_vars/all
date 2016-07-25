@@ -1,0 +1,9 @@
+# variables that are visible from all roles
+
+# ssh configuration file
+sshd_port: 443
+sshd_permitrootlogin: yes
+sshd_pubkeyauth: yes
+sshd_passwdauth: yes
+
+
